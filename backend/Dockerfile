@@ -1,5 +1,5 @@
 # 1. Node.js ka image use karein
-FROM node:18
+FROM node:20
 
 # 2. Folder banayein container ke andar
 WORKDIR /app
