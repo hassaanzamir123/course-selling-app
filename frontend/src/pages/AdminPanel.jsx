@@ -5,12 +5,11 @@ import { Link } from 'react-router-dom';
 import toast from 'react-hot-toast';
 
 const AdminPanel = () => {
-    // 1. Initial State mein sari fields ko empty string "" dena zaroori hai
     const [courseData, setCourseData] = useState({
         title: "",
         category: "",
         image: "",
-        videoUrl: "", // Naya field add kiya
+        videoUrl: "", 
         price: "",
         description: ""
     });
@@ -19,24 +18,23 @@ const AdminPanel = () => {
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        // value || "" ensure karta hai ke input kabhi uncontrolled na ho
         setCourseData({ ...courseData, [name]: value || "" });
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         
-        // Validation: Check karein sab fields bhari hain
         if(!courseData.title || !courseData.videoUrl || !courseData.image) {
             return toast.error("Please fill all important fields!");
         }
 
         setLoading(true);
         try {
-            const res = await axios.post('http://localhost:9000/add-course', courseData);
+            // ✅ LOCALHOST KI JAGAH LIVE BACKEND URL LAGA DIYA HAI
+            const res = await axios.post('https://courserbackend-n6250f72.b4a.run/add-course', courseData);
+            
             if (res.status === 200 || res.status === 201) {
                 toast.success("Course Published Successfully! 🚀");
-                // Form reset after success
                 setCourseData({
                     title: "",
                     category: "",
@@ -66,7 +64,7 @@ const AdminPanel = () => {
                     <li className='flex items-center gap-3 bg-emerald-500/10 text-emerald-500 p-3 rounded-xl font-semibold cursor-pointer'>
                         <MdAddCircleOutline size={22}/> Add New Course
                     </li>
-                    <Link to='/my-courses' className='flex items-center gap-3 text-zinc-400 hover:text-white p-3 rounded-xl transition-all hover:bg-slate-800'>
+                    <Link to='/MyCourses' className='flex items-center gap-3 text-zinc-400 hover:text-white p-3 rounded-xl transition-all hover:bg-slate-800'>
                         <MdLibraryBooks size={22}/> My Courses
                     </Link>
                 </ul>
@@ -81,7 +79,6 @@ const AdminPanel = () => {
                     </header>
 
                     <form onSubmit={handleSubmit} className='grid grid-cols-1 md:grid-cols-2 gap-6'>
-                        {/* Course Title */}
                         <div className='flex flex-col gap-2 md:col-span-2'>
                             <label className='font-bold text-sm text-zinc-600'>Course Title</label>
                             <input 
@@ -91,7 +88,6 @@ const AdminPanel = () => {
                             />
                         </div>
 
-                        {/* Category */}
                         <div className='flex flex-col gap-2'>
                             <label className='font-bold text-sm text-zinc-600'>Category</label>
                             <input 
@@ -101,7 +97,6 @@ const AdminPanel = () => {
                             />
                         </div>
 
-                        {/* Price */}
                         <div className='flex flex-col gap-2'>
                             <label className='font-bold text-sm text-zinc-600'>Price (USD)</label>
                             <input 
@@ -111,7 +106,6 @@ const AdminPanel = () => {
                             />
                         </div>
 
-                        {/* Video URL (The New Field) */}
                         <div className='flex flex-col gap-2 md:col-span-2'>
                             <label className='font-bold text-sm text-emerald-600 flex items-center gap-1'>
                                 <MdCloudUpload /> Course Video URL (YouTube/Vimeo)
@@ -123,7 +117,6 @@ const AdminPanel = () => {
                             />
                         </div>
 
-                        {/* Image URL */}
                         <div className='flex flex-col gap-2 md:col-span-2'>
                             <label className='font-bold text-sm text-zinc-600'>Thumbnail Image URL</label>
                             <input 
@@ -133,7 +126,6 @@ const AdminPanel = () => {
                             />
                         </div>
 
-                        {/* Description */}
                         <div className='flex flex-col gap-2 md:col-span-2'>
                             <label className='font-bold text-sm text-zinc-600'>Description</label>
                             <textarea 
@@ -143,7 +135,6 @@ const AdminPanel = () => {
                             ></textarea>
                         </div>
 
-                        {/* Submit Button */}
                         <button 
                             disabled={loading}
                             type="submit"

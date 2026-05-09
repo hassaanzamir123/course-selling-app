@@ -18,7 +18,8 @@ const CourseDetail = () => {
   useEffect(() => {
     const fetchCourse = async () => {
       try {
-        const res = await axios.get(`http://localhost:9000/course/${id}`)
+        // ✅ LOCALHOST KI JAGAH AB LIVE BACK4APP URL USE HO RAHA HAI
+        const res = await axios.get(`https://courserbackend-n6250f72.b4a.run/course/${id}`)
         setCourse(res.data)
         setLoading(false)
       } catch (err) {
@@ -41,7 +42,7 @@ const CourseDetail = () => {
       setTimeout(() => {
         navigate('/Signup'); // Login page par bhej do
       }, 1500);
-      return; // Neeche wala code mat chalao
+      return; 
     }
 
     // 2. Agar login hai, toh Cart mein add karo
@@ -125,7 +126,6 @@ const CourseDetail = () => {
                   <span className='text-zinc-400 line-through'>${(course.price * 1.5).toFixed(2)}</span>
                 </div>
 
-                {/* Updated Button Click */}
                 <button 
                   onClick={handleEnroll} 
                   className='w-full bg-emerald-600 text-white font-bold py-4 rounded-xl hover:bg-emerald-700 transition duration-300 transform active:scale-95 shadow-lg shadow-emerald-200 mb-4 cursor-pointer'

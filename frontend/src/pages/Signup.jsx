@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom' 
 import axios from 'axios'
-import toast from 'react-hot-toast' // Toast ko wapas le aaye
+import toast from 'react-hot-toast'
 
 const Signup = () => {
   const [user, setUser] = useState({ name: "", email: "", password: "" })
@@ -24,9 +24,9 @@ const Signup = () => {
     const toastId = toast.loading('Creating account...'); 
 
     try {
-      const res = await axios.post('http://localhost:9000/register', user);
       
-      // Agar backend success response deta hai
+      const res = await axios.post('https://courserbackend-n6250f72.b4a.run/register', user);
+      
       toast.success(`Welcome , ${user.name}! 🚀`, { id: toastId });
       localStorage.setItem('user', JSON.stringify(res.data));
       
@@ -34,12 +34,9 @@ const Signup = () => {
       setTimeout(() => navigate('/'), 1500);
 
     } catch (err) {
-      setLoading(false); // Sab se zaroori: Loading khatam karo taake button wapas aa jaye
+      setLoading(false); 
       
-      // 2. Yahan "Already Exists" wala rola pakda jaye ga
       const errorMessage = err.response?.data?.message || "Something went wrong!";
-      
-      // Agar backend bhej raha hai "User already exists", toh wahi dikhao
       toast.error(errorMessage, { id: toastId });
       
       console.log("Error Details:", err.response?.data);

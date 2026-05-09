@@ -2,6 +2,7 @@ import React from 'react'
 import Footer from '../components/Footer'
 
 const About = () => {
+  // Team array agar aap future mein expand karna chahein
   const team = [
     { name: "Hassaan Zamir", role: "Founder & Lead Developer", img: "https://via.placeholder.com/150" },
     { name: "Ali Ahmed", role: "Backend Architect", img: "https://via.placeholder.com/150" },
@@ -62,8 +63,7 @@ const About = () => {
         </div>
       </section>
 
-
-{/* 4. Founder Section */}
+      {/* 4. Founder Section */}
       <section className='bg-slate-50 py-24 px-4'>
         <div className='max-w-4xl mx-auto'>
           <div className='text-center mb-16'>
@@ -75,7 +75,7 @@ const About = () => {
             {/* Founder Image */}
             <div className='w-48 h-48 md:w-64 md:h-64 bg-slate-100 rounded-2xl overflow-hidden border-4 border-white ring-4 ring-emerald-100 shadow-xl flex-shrink-0'>
                <img 
-                 src="https://your-portfolio-link.com/your-photo.jpg" 
+                 src="https://via.placeholder.com/300" // 👈 Apni real image ka URL yahan dalein
                  alt="Hassaan Zamir" 
                  className='w-full h-full object-cover'
                />
@@ -89,14 +89,16 @@ const About = () => {
                 I am a full-stack developer with a passion for building scalable web applications and teaching others how to do the same. I started this platform to simplify complex coding concepts and provide a roadmap for aspiring developers in our community.
               </p>
               <div className='flex justify-center md:justify-start gap-6 pt-4'>
-                <a href="#" className='text-slate-400 hover:text-emerald-500 transition-colors font-medium'>LinkedIn</a>
-                <a href="#" className='text-slate-400 hover:text-emerald-500 transition-colors font-medium'>GitHub</a>
+                {/* 👈 Apne real social links yahan dalein */}
+                <a href="https://linkedin.com" target="_blank" rel="noreferrer" className='text-slate-400 hover:text-emerald-500 transition-colors font-medium'>LinkedIn</a>
+                <a href="https://github.com" target="_blank" rel="noreferrer" className='text-slate-400 hover:text-emerald-500 transition-colors font-medium'>GitHub</a>
                 <a href="#" className='text-slate-400 hover:text-emerald-500 transition-colors font-medium'>Portfolio</a>
               </div>
             </div>
           </div>
         </div>
       </section>
+
       <Footer />
     </div>
   )

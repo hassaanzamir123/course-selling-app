@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom' // useNavigate add kiya
+import { Link, useNavigate } from 'react-router-dom' 
 import axios from 'axios'
-import toast from 'react-hot-toast' // 1. Toast import kiya
+import toast from 'react-hot-toast' 
 
 const Login = () => {
   const [user, setUser] = useState({ email: '', password: '' })
@@ -17,8 +17,7 @@ const Login = () => {
       return toast.error("Please enter both email and password! 🔑");
     }
 
-    // 2. Toast Promise setup
-    const loginPromise = axios.post('http://localhost:9000/login', user);
+    const loginPromise = axios.post('https://courserbackend-n6250f72.b4a.run/login', user);
 
     toast.promise(loginPromise, {
       loading: 'Logging you in... 🚀',
@@ -26,19 +25,17 @@ const Login = () => {
         if (res.data.status === "success") {
           localStorage.setItem("token", res.data.token);
           
-          // Agar aap user ka data bhi save karna chahte hain
           if(res.data.user) {
             localStorage.setItem("user", JSON.stringify(res.data.user));
           }
 
-          setTimeout(() => navigate('/'), 1500); // Redirect after short delay
+          setTimeout(() => navigate('/'), 1500); 
           return "Login Successful! Welcome back. 🎉";
         } else {
-          throw new Error("Login failed"); // Success block mein agar status success na ho
+          throw new Error("Login failed"); 
         }
       },
       error: (err) => {
-        // Backend ka error message dikhane ke liye
         return err.response?.data?.message || "Invalid credentials! ❌";
       }
     });

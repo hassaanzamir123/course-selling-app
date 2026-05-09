@@ -13,7 +13,8 @@ const Courses = () => {
     useEffect(() => {
         const getData = async () => {
             try {
-                const res = await axios.get('http://localhost:9000/all-courses');
+                // ✅ LOCALHOST KI JAGAH AB LIVE BACK4APP URL USE HO RAHA HAI
+                const res = await axios.get('https://courserbackend-n6250f72.b4a.run/all-courses');
                 setAllCourses(res.data);
             } catch (err) {
                 console.log("Error fetching courses", err);
@@ -87,7 +88,6 @@ const Courses = () => {
                         <div className='sticky top-24 bg-white border border-zinc-200 rounded-3xl p-5 shadow-sm'>
                             <h2 className='font-bold text-zinc-800 mb-4 px-2'>Categories</h2>
                             
-                            {/* Horizontal scroll on mobile, vertical on desktop */}
                             <div className='flex flex-row md:flex-col gap-2 overflow-x-auto no-scrollbar pb-2 md:pb-0'>
                                 {categories.map((cat, index) => (
                                     <button

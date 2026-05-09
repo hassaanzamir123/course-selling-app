@@ -1,7 +1,7 @@
-import React, { useContext } from 'react'
-import {Link} from 'react-router-dom'
+import React from 'react'
+import { Link } from 'react-router-dom'
+
 const Footer = () => {
-  
   return (
     <footer className='bg-slate-900 text-slate-300 py-12 px-9 mt-20'>
       <div className='max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-10'>
@@ -14,13 +14,19 @@ const Footer = () => {
           </p>
         </div>
 
-        {/* Column 2: Pages */}
+        {/* Column 2: Pages - Links Fixed */}
         <div>
           <h3 className='text-white font-semibold mb-4'>Company</h3>
           <ul className='space-y-2 text-sm'>
-            <li Link to='/' className='hover:text-emerald-500 cursor-pointer'>Home</li>
-            <li Link to='/about' className='hover:text-emerald-500 cursor-pointer'>About Us</li>
-            <li Link to='/contact ' className='hover:text-emerald-500 cursor-pointer'>Contact</li>
+            <li>
+              <Link to='/' className='hover:text-emerald-500 transition-colors'>Home</Link>
+            </li>
+            <li>
+              <Link to='/About' className='hover:text-emerald-500 transition-colors'>About Us</Link>
+            </li>
+            <li>
+              <Link to='/Contact' className='hover:text-emerald-500 transition-colors'>Contact</Link>
+            </li>
             <li className='hover:text-emerald-500 cursor-pointer'>Privacy Policy</li>
           </ul>
         </div>

@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react' // useEffect aur useState add kiya
+import React, { useState, useEffect } from 'react' 
 import Navbar from '../components/Navbar'
 import { assets } from '../assets/assets.js'
 import CourseCard from '../components/CourseCard.jsx';
 import Review from '../components/Review.jsx';
 import Footer from '../components/Footer.jsx';
-import axios from 'axios'; // axios import karo
+import axios from 'axios'; 
 
 const Home = () => {
   const [popularCourses, setPopularCourses] = useState([]);
@@ -14,7 +14,9 @@ const Home = () => {
   useEffect(() => {
     const fetchHomeCourses = async () => {
       try {
-        const res = await axios.get('http://localhost:9000/all-courses');
+        // ✅ LOCALHOST KI JAGAH AB LIVE BACK4APP URL USE HO RAHA HAI
+        const res = await axios.get('https://courserbackend-n6250f72.b4a.run/all-courses');
+        
         // Hum sirf pehle 3 courses dikhayenge Home page par
         setPopularCourses(res.data.slice(0, 3)); 
       } catch (err) {
@@ -59,7 +61,7 @@ const Home = () => {
                 <CourseCard key={course._id} data={course} />
               ))
             ) : (
-              <p className='text-center col-span-3'>Loading amazing courses...</p>
+              <p className='text-center col-span-3 text-zinc-500'>Loading amazing courses...</p>
             )
           }
         </div>
