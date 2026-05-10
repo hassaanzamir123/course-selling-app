@@ -1,31 +1,34 @@
 import React from 'react'
-import {assets} from '../assets/assets.js'
 
 const Review = () => {
   const reviews = [
     {
-      name: 'Hassaan', 
+      name: 'Haider Ali', 
       course: "Web Development", 
       rating: 5, 
-      text: "The logic-building exercises in React were game-changers for me!"
+      text: "The logic-building exercises in React were game-changers for me!",
+      img: "https://photodpshare.com/wp-content/uploads/2025/10/boys-stylish-dp-nice-3k.jpg"
     },
     {
-      name: 'Ali', 
+      name: 'Sarah Khan', 
       course: "App Development", 
       rating: 4, 
-      text: "Practical projects helped me land my first internship. Highly recommended."
+      text: "Practical projects helped me land my first internship. Highly recommended.",
+      img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTuyeFORtnzczek_kVC-GFNqFnboRzDbn3y5A&s"
     },
     {
-      name: 'Ahmad', 
+      name: 'Haris Ahmad', 
       course: "UI/UX Design", 
       rating: 5, 
-      text: "Simplified complex concepts into easy-to-understand modules."
+      text: "Simplified complex concepts into easy-to-understand modules.",
+      img: "https://cdn2.momjunction.com/wp-content/uploads/2019/07/Whatsapp-DP-Images-For-Boys-1.jpg.webp"
     },
     {
-      name: 'Sajid', 
+      name: 'Sajid Khan', 
       course: "MERN Stack", 
       rating: 4, 
-      text: "Supporting community and the instructor is always ready to help."
+      text: "Supporting community and the instructor is always ready to help.",
+      img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR8rJb51eAVEWtqMZ1db7M3H3pYt72XH9R5gg&s"
     }
   ]
 
@@ -45,13 +48,13 @@ const Review = () => {
             >
               <div className='flex flex-col items-center text-center'>
                 {/* Profile Image / Avatar */}
-                <div className='w-20 h-20 mb-5 relative'>
+                <div className='w-24 h-24 mb-5 relative'>
                   <img 
-                    src={assets.hero} 
-                    className='w-full h-full object-cover rounded-2xl border-2 border-emerald-500 p-1 shadow-lg shadow-emerald-100' 
+                    src={item.img} 
+                    className='w-full h-full object-cover rounded-full border-2 border-emerald-500 p-1 shadow-lg shadow-emerald-100' 
                     alt={item.name} 
                   />
-                  <span className='absolute -bottom-2 -right-2 bg-emerald-500 text-white text-[10px] px-2 py-1 rounded-lg font-bold'>Verified</span>
+                  {/* Verified tag yahan se remove kar diya gaya hai */}
                 </div>
 
                 {/* Review Content */}

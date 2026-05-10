@@ -11,30 +11,30 @@ const Navbar = () => {
   const { cart } = useContext(CartContext)
   const navigate = useNavigate()
 
-  // Safer way to parse user from localStorage
+  // User parsing logic
   const savedUser = localStorage.getItem('user')
   let user = null
   try {
     user = (savedUser && savedUser !== "undefined") ? JSON.parse(savedUser) : null
   } catch (error) {
-    console.error("User parsing error:", error)
     user = null
   }
 
-  const handleProfile = () => {
+  const handleProfileClick = () => {
     setIsOpen(false)
     if (user) {
-      navigate('/adminPanel') // Agar admin user hai toh panel, warna profile page bana sakte ho
+      navigate('/adminPanel') // Agar logged in hai toh adminPanel
     } else {
-      navigate('/Login') // Signup ki jagah Login behtar flow hai
+      navigate('/Login') // Agar logged in nahi hai toh Login/SignIn page
     }
   }
 
   const handleLogout = () => {
     localStorage.removeItem('user')
+    localStorage.removeItem('token')
     setIsOpen(false)
     navigate('/')
-    window.location.reload() // UI update karne ke liye reload zaroori hai agar context use nahi kar rahe
+    window.location.reload() 
   }
 
   return (
@@ -68,7 +68,6 @@ const Navbar = () => {
           {/* Right Side: Cart & Profile */}
           <div className='flex items-center gap-4 md:gap-6 text-white text-2xl md:text-3xl'>
             
-            {/* Cart Icon */}
             <Link to='/cart' className='relative active:scale-90 transition-transform'>
               <HiMiniShoppingCart className='hover:text-emerald-400 transition-colors' />
               {cart.length > 0 && (
@@ -78,22 +77,45 @@ const Navbar = () => {
               )}
             </Link>
             
-            {/* Profile Dropdown */}
             <div className='relative'>
-              <MdManageAccounts 
-                className='hover:text-emerald-400 cursor-pointer active:scale-90 transition-transform' 
-                onClick={() => setIsOpen(!isOpen)} 
-              />
+              {/* Dynamic Icon: Open hone par Cross (MdClose) dikhayega */}
+              {isOpen ? (
+                <MdClose 
+                  className='text-emerald-500 cursor-pointer active:scale-90 transition-transform' 
+                  onClick={() => setIsOpen(false)} 
+                />
+              ) : (
+                <MdManageAccounts 
+                  className='hover:text-emerald-400 cursor-pointer active:scale-90 transition-transform' 
+                  onClick={() => setIsOpen(true)} 
+                />
+              )}
 
               {isOpen && (
-                <div className="absolute top-12 right-0 z-50 w-48 bg-slate-800 shadow-2xl rounded-2xl border border-slate-700 p-2 overflow-hidden transform origin-top-right transition-all">
-                  <ul className="text-sm">
-                    <li onClick={handleProfile} className="px-4 py-3 hover:bg-slate-700 cursor-pointer text-white rounded-xl transition-colors">
-                      {user ? 'Admin Dashboard' : 'Login / Register'}
+                <div className="absolute top-12 right-0 z-50 w-48 bg-slate-800 shadow-2xl rounded-2xl border border-slate-700 p-2 overflow-hidden transform origin-top-right transition-all animate-in fade-in zoom-in duration-200">
+                  <ul className="flex flex-col text-sm">
+                    {/* Vertical Option 1: Profile/Admin */}
+                    <li 
+                      onClick={handleProfileClick} 
+                      className="px-4 py-3 hover:bg-slate-700 cursor-pointer text-white rounded-xl transition-colors font-medium"
+                    >
+                      My Profile
                     </li>
-                    {user && (
-                      <li onClick={handleLogout} className="px-4 py-3 hover:bg-red-500/10 cursor-pointer text-red-500 rounded-xl transition-colors border-t border-slate-700 mt-1">
-                        LogOut
+
+                    {/* Vertical Option 2: Signup or Logout */}
+                    {!user ? (
+                      <li 
+                        onClick={() => {navigate('/Signup'); setIsOpen(false)}} 
+                        className="px-4 py-3 hover:bg-slate-700 cursor-pointer text-white rounded-xl transition-colors font-medium border-t border-slate-700"
+                      >
+                        Sign Up
+                      </li>
+                    ) : (
+                      <li 
+                        onClick={handleLogout} 
+                        className="px-4 py-3 hover:bg-red-500/20 cursor-pointer text-red-500 rounded-xl transition-colors border-t border-slate-700 font-bold"
+                      >
+                        Log Out
                       </li>
                     )}
                   </ul>
@@ -103,7 +125,7 @@ const Navbar = () => {
           </div>
         </div>
 
-        {/* Mobile Sidebar Menu */}
+        {/* Mobile Sidebar Menu (Same as before) */}
         <div 
           className={`fixed inset-0 bg-black/60 backdrop-blur-sm z-[150] transition-all duration-300 md:hidden ${isMobileMenuOpen ? 'opacity-100 visible' : 'opacity-0 invisible'}`} 
           onClick={() => setIsMobileMenuOpen(false)}
@@ -125,10 +147,6 @@ const Navbar = () => {
                 <Link to='/Contact' onClick={() => setIsMobileMenuOpen(false)} className='hover:text-emerald-400 border-b border-slate-800 pb-2'>Contact</Link>
               </ul>
             </nav>
-
-            <div className='absolute bottom-10 left-6 text-slate-500 text-sm'>
-              © 2026 Courser EdTech
-            </div>
           </div>
         </div>
       </div>

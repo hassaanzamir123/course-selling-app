@@ -9,11 +9,15 @@ import jwt from 'jsonwebtoken'
 import Course from './models/Course.js'
 
 const app = express()
-app.use(cors())
 app.use(express.json())
 dotenv.config()
 connectedDB()
 
+app.use(cors({
+  origin: ["https://courserapp.netlify.app", "http://localhost:5173"], 
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  credentials: true
+}));
 const PORT = process.env.PORT || 3000
 
 app.get('/',(req,res)=>{
@@ -77,25 +81,25 @@ app.post('/add-course', async (req, res) => {
         });
     }
 });
+app.post('/register', async (req, res) => {
+    try {
+        const { name, email, password } = req.body;
+        const hashedPassword = await bcrypt.hash(password, 10);
+        const newUser = new User({
+            name: name,
+            email: email,
+            password: hashedPassword
+        });
+        await newUser.save();
 
-app.post('/register',async(req,res)=>{
-    try{
-    const {name,email,password} = req.body;
-    const hashedPassword = await bcrypt.hash(password,10)
-    const newUser = new User({
-        name:name,
-        email:email,
-        password:hashedPassword
-    })
-      await newUser.save()
-    res.json({ message: "Check your terminal!" });
-  
+        // Ye line zaroori hai taake signup ke baad user login ho sake
+        res.status(201).json({ status: "success", message: "User Registered Successfully" });
     }
-    catch(error){
-        console.log(error)
+    catch (error) {
+        console.log(error);
+        res.status(500).json({ message: "Registration Failed" });
     }
-
-}) 
+});
 
 app.post('/login',async (req,res)=>{
     try{
