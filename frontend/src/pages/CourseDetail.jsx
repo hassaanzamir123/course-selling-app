@@ -18,8 +18,8 @@ const CourseDetail = () => {
   useEffect(() => {
     const fetchCourse = async () => {
       try {
-        // ✅ LOCALHOST KI JAGAH AB LIVE BACK4APP URL USE HO RAHA HAI
-        const res = await axios.get(`https://courserbackend-n6250f72.b4a.run/course/${id}`)
+        // ✅ Fixed: Manual URL replaced with environment variable
+        const res = await axios.get(`${import.meta.env.VITE_API_URL}/course/${id}`)
         setCourse(res.data)
         setLoading(false)
       } catch (err) {

@@ -30,8 +30,8 @@ const AdminPanel = () => {
 
         setLoading(true);
         try {
-            // ✅ LOCALHOST KI JAGAH LIVE BACKEND URL LAGA DIYA HAI
-            const res = await axios.post('https://courserbackend-n6250f72.b4a.run/add-course', courseData);
+            // ✅ Fixed: Environment variable used for API URL
+            const res = await axios.post(`${import.meta.env.VITE_API_URL}/add-course`, courseData);
             
             if (res.status === 200 || res.status === 201) {
                 toast.success("Course Published Successfully! 🚀");

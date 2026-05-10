@@ -24,8 +24,8 @@ const Signup = () => {
     const toastId = toast.loading('Creating account...'); 
 
     try {
-      
-      const res = await axios.post('https://courserbackend-n6250f72.b4a.run/register', user);
+      // ✅ URL ki jagah environment variable use kiya hai
+      const res = await axios.post(`${import.meta.env.VITE_API_URL}/register`, user);
       
       toast.success(`Welcome , ${user.name}! 🚀`, { id: toastId });
       localStorage.setItem('user', JSON.stringify(res.data));

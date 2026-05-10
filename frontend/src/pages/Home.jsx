@@ -14,8 +14,8 @@ const Home = () => {
   useEffect(() => {
     const fetchHomeCourses = async () => {
       try {
-        // ✅ LOCALHOST KI JAGAH AB LIVE BACK4APP URL USE HO RAHA HAI
-        const res = await axios.get('https://courserbackend-n6250f72.b4a.run/all-courses');
+        // ✅ Fixed: Manual URL replaced with environment variable
+        const res = await axios.get(`${import.meta.env.VITE_API_URL}/all-courses`);
         
         // Hum sirf pehle 3 courses dikhayenge Home page par
         setPopularCourses(res.data.slice(0, 3)); 

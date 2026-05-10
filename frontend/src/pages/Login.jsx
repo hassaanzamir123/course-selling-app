@@ -17,7 +17,8 @@ const Login = () => {
       return toast.error("Please enter both email and password! 🔑");
     }
 
-    const loginPromise = axios.post('https://courserbackend-n6250f72.b4a.run/login', user);
+    // ✅ Fixed: Manual URL replaced with environment variable
+    const loginPromise = axios.post(`${import.meta.env.VITE_API_URL}/login`, user);
 
     toast.promise(loginPromise, {
       loading: 'Logging you in... 🚀',
