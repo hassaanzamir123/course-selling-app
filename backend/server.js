@@ -24,7 +24,7 @@ app.use(express.json());
 dotenv.config();
 connectedDB();
 
-const PORT = process.env.PORT || 8080; // Back4App 8080 use karta hai aam taur par
+const PORT = process.env.PORT || 7860 ; 
 
 // --- ROUTES ---
 
