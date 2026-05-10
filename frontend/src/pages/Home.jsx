@@ -10,17 +10,24 @@ const Home = () => {
   const [popularCourses, setPopularCourses] = useState([]);
   const categories = ["Web Development", "Data Science", "UI/UX Design", "Marketing", "Business"];
 
-  // Backend se data mangwane ke liye
   useEffect(() => {
     const fetchHomeCourses = async () => {
       try {
-        // ✅ Fixed: Manual URL replaced with environment variable
+        // ✅ API Call using environment variable
         const res = await axios.get(`${import.meta.env.VITE_API_URL}/all-courses`);
         
-        // Hum sirf pehle 3 courses dikhayenge Home page par
-        setPopularCourses(res.data.slice(0, 3)); 
+        // 🔥 SAFETY FIX: Direct res.data.slice crash kar sakta hai agar data na mile
+        // Pehle check karo ke data array hai ya nahi
+        const fetchedData = res.data?.results || res.data?.data || res.data;
+        
+        if (Array.isArray(fetchedData)) {
+          setPopularCourses(fetchedData.slice(0, 3)); 
+        } else {
+          setPopularCourses([]);
+        }
       } catch (err) {
         console.log("Home page data error:", err);
+        setPopularCourses([]); // Error ki surat mein empty array taake .map crash na ho
       }
     };
     fetchHomeCourses();
@@ -28,7 +35,7 @@ const Home = () => {
 
   return (
     <>
-      <div>
+      <div className='overflow-x-hidden'>
         <div className="relative w-full h-130 flex items-center justify-center text-center">
           <img src={assets.hero} className="absolute inset-0 w-full h-full object-cover brightness-50" alt="hero" />
           <div className="relative z-10 text-white p-4">
@@ -40,9 +47,9 @@ const Home = () => {
           </div>
         </div>
 
-        {/*----------------------------------- Pills --------------------------------------- */}
+        {/* Categories Section */}
         <h1 className='text-2xl text-center font-semibold mt-10'>Famous Categories</h1>
-        <div className='flex flex-wrap my-6 justify-center gap-4'>
+        <div className='flex flex-wrap my-6 justify-center gap-4 px-4'>
           {categories.map((cat, index) => (
             <div key={index} className='bg-emerald-500 shadow-md hover:bg-emerald-600 transition-all cursor-pointer rounded-full px-6 py-2 text-white font-semibold'>
               {cat}
@@ -50,18 +57,20 @@ const Home = () => {
           ))}
         </div>
 
-        {/* --------------------------------- Famous Courses ------------------------------ */}
+        {/* Popular Courses Section */}
         <h1 className='text-3xl text-center font-bold mt-16 mb-8'>Most Popular Courses</h1>
         
-        {/* Grid container for cards */}
         <div className='max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-8'>
           {
-            popularCourses.length > 0 ? (
+            // 🔥 SAFETY FIX: (popularCourses || []) ensures it never tries to map over null
+            (popularCourses && popularCourses.length > 0) ? (
               popularCourses.map((course) => (
                 <CourseCard key={course._id} data={course} />
               ))
             ) : (
-              <p className='text-center col-span-3 text-zinc-500'>Loading amazing courses...</p>
+              <div className='col-span-3 text-center py-10'>
+                 <p className='text-zinc-500 animate-pulse'>Loading amazing courses...</p>
+              </div>
             )
           }
         </div>
