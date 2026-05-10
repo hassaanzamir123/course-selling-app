@@ -4,7 +4,7 @@ import CourseCard from '../components/CourseCard';
 import Footer from '../components/Footer';
 
 const Courses = () => {
-    const [allcourses, setAllCourses] = useState([]);
+    const [allcourses, setAllCourses] = useState([]); // Initial state is an array
     const [searchTerm, setSearchTerm] = useState("");
     
     // Categories list
@@ -13,23 +13,33 @@ const Courses = () => {
     useEffect(() => {
         const getData = async () => {
             try {
-                // ✅ Fixed: Manual URL replaced with environment variable
+                // ✅ Environment variable check
                 const res = await axios.get(`${import.meta.env.VITE_API_URL}/all-courses`);
-                setAllCourses(res.data);
+                
+                // 🔥 FIX 1: Extract array safely (Checks if data is in .results or .data or direct)
+                const fetchedData = res.data?.results || res.data?.data || res.data;
+                
+                if (Array.isArray(fetchedData)) {
+                    setAllCourses(fetchedData);
+                } else {
+                    console.error("API Response is not an array:", res.data);
+                    setAllCourses([]); // Fallback to empty array
+                }
             } catch (err) {
                 console.log("Error fetching courses", err);
+                setAllCourses([]); // Error state fallback
             }
         };
         getData();
     }, []);
 
-    // Filter logic constant takay code saaf rahay
-    const filteredCourses = allcourses.filter((course) => {
+    // 🔥 FIX 2: Added optional chaining and Array check to prevent .filter crash
+    const filteredCourses = (Array.isArray(allcourses) ? allcourses : []).filter((course) => {
+        if (!course) return false;
         const lowerSearch = searchTerm.toLowerCase();
-        return (
-            course.title.toLowerCase().includes(lowerSearch) ||
-            course.category.toLowerCase().includes(lowerSearch)
-        );
+        const titleMatch = course.title?.toLowerCase().includes(lowerSearch);
+        const categoryMatch = course.category?.toLowerCase().includes(lowerSearch);
+        return titleMatch || categoryMatch;
     });
 
     return (
@@ -46,17 +56,15 @@ const Courses = () => {
                     </p>
                 </header>
 
-                {/* ----------------------------- Modern Search Bar ------------------------------------------- */}
+                {/* Modern Search Bar */}
                 <div className='max-w-2xl mx-auto mb-12'>
                     <div className='relative group'>
-                        {/* Search Icon */}
                         <div className='absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none'>
                             <svg className="w-5 h-5 text-zinc-400 group-focus-within:text-emerald-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                             </svg>
                         </div>
                         
-                        {/* The Modern Input */}
                         <input
                             onChange={(e) => setSearchTerm(e.target.value)}
                             value={searchTerm}
@@ -68,7 +76,6 @@ const Courses = () => {
                                        focus:ring-4 focus:ring-emerald-500/10 focus:border-emerald-500 focus:shadow-md'
                         />
 
-                        {/* Clear Button */}
                         {searchTerm && (
                             <button 
                                 onClick={() => setSearchTerm("")}
@@ -80,10 +87,9 @@ const Courses = () => {
                     </div>
                 </div>
 
-                {/* ----------------------------- Main Content Layout ------------------------------------------- */}
                 <div className='flex flex-col md:flex-row gap-8 pb-24'>
 
-                    {/* --- Sidebar (Categories) --- */}
+                    {/* Sidebar (Categories) */}
                     <aside className='w-full md:w-72 shrink-0'>
                         <div className='sticky top-24 bg-white border border-zinc-200 rounded-3xl p-5 shadow-sm'>
                             <h2 className='font-bold text-zinc-800 mb-4 px-2'>Categories</h2>
@@ -106,7 +112,7 @@ const Courses = () => {
                         </div>
                     </aside>
 
-                    {/* --- Courses Grid --- */}
+                    {/* Courses Grid */}
                     <main className='flex-1'>
                         {filteredCourses.length > 0 ? (
                             <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6'>
@@ -115,7 +121,6 @@ const Courses = () => {
                                 ))}
                             </div>
                         ) : (
-                            /* No Results State */
                             <div className='flex flex-col items-center justify-center py-20 bg-white rounded-3xl border border-zinc-100 shadow-sm'>
                                 <div className='text-6xl mb-4'>🔭</div>
                                 <h3 className='text-xl font-bold text-zinc-800'>No matches found</h3>
